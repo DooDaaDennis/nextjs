@@ -33,5 +33,5 @@ jobs:
             cd /var/www/dennisapplebaum
       
             docker compose pull 
-            docker compose --profile "$SERVICE_NAME" up -d
+            docker compose --profile "$SERVICE_NAME" up -d --force-recreate
           EOF
