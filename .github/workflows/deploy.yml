@@ -26,7 +26,7 @@ jobs:
           ssh ${{ secrets.SERVER_USER }} << 'EOF'
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u doodaadennis --password-stdin
 
-            cd /root/var/www/dennisapplebaum      # change to your folder containing docker-compose.yml
+            cd /var/www/dennisapplebaum      # change to your folder containing docker-compose.yml
 
             docker compose pull $SERVICE_NAME   # gets newest image from GHCR
             docker compose up -d $SERVICE_NAME  # restarts service
