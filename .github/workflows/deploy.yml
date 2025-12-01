@@ -28,5 +28,6 @@ jobs:
 
             cd /var/www/dennisapplebaum      # change to your folder containing docker-compose.yml
 
-            docker compose up -d --pull always $SERVICE_NAME
+            docker compose pull $SERVICE_NAME
+            docker compose up -d --no-deps --build $SERVICE_NAME
           EOF
