@@ -31,5 +31,3 @@ jobs:
             docker compose pull $SERVICE_NAME   # gets newest image from GHCR
             docker compose up -d $SERVICE_NAME  # restarts service
           EOF
-      - env:
-        SERVICE_NAME: ${{ github.repository }}
