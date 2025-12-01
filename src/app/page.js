@@ -14,7 +14,7 @@ export default function Home() {
           priority
         />
         <ol>
-          <li>A test nextjs site.</li>
+          <li>A test nextjs site. I have added a release script</li>
         </ol>
       </main>
     </div>
