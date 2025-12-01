@@ -31,5 +31,6 @@ jobs:
           docker compose pull
           docker compose stop "$SERVICE_NAME" || true
           docker compose rm "$SERVICE_NAME" || true
-          /usr/bin/docker compose --profile "$SERVICE_NAME" up -d
+          
+          docker compose --profile "$SERVICE_NAME" up -d
           EOF
