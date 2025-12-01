@@ -29,5 +29,6 @@ jobs:
             cd /var/www/dennisapplebaum      # change to your folder containing docker-compose.yml
 
             docker compose pull $SERVICE_NAME   # gets newest image from GHCR
+            docker compose rm -f $SERVICE_NAME
             docker compose up -d $SERVICE_NAME  # restarts service
           EOF
