@@ -29,5 +29,6 @@ jobs:
             cd /var/www/dennisapplebaum      # change to your folder containing docker-compose.yml
 
             docker compose pull $SERVICE_NAME
+            docker rm -f $SERVICE_NAME || true
             docker compose up -d --no-deps $SERVICE_NAME
           EOF
