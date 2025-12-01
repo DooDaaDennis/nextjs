@@ -16,7 +16,7 @@ export default function Home() {
         <ol>
           <li>
             A test nextjs site. I have added a release script. Now I have tried
-            to make it deploy automatically
+            to make it deploy automatically. Test2
           </li>
         </ol>
       </main>
