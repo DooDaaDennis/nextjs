@@ -23,17 +23,17 @@ jobs:
 
       - name: Deploy over SSH
         run: |
-          ssh ${{ secrets.SERVER_USER }} << EOF
-            set -xe
-      
-            SERVICE_NAME=${{ github.event.repository.name }}
-      
-            echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u doodaadennis --password-stdin
-      
-            cd /var/www/dennisapplebaum
-      
-            docker compose pull 
-            docker compose stop  "$SERVICE_NAME" || true
-            docker compose rm "$SERVICE_NAME" || true
-            docker compose --profile "$SERVICE_NAME" up -d
+          ssh ${{ secrets.SERVER_USER }} /bin/bash << 'EOF'
+          set -xe
+          
+          SERVICE_NAME="${{ github.event.repository.name }}"
+          
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u doodaadennis --password-stdin
+          
+          cd /var/www/dennisapplebaum
+          
+          docker compose pull 
+          docker compose stop "$SERVICE_NAME" || true
+          docker compose rm "$SERVICE_NAME" || true
+          docker compose --profile "$SERVICE_NAME" up -d
           EOF
