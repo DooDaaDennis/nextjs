@@ -24,10 +24,11 @@ jobs:
       - name: Deploy over SSH
         run: |
           ssh ${{ secrets.SERVER_USER }} << 'EOF'
+            set -xe   # Echo commands and stop on error
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u doodaadennis --password-stdin
 
             cd /var/www/dennisapplebaum      # change to your folder containing docker-compose.yml
 
             docker compose pull $SERVICE_NAME
-            docker compose --profile [$SERVICE_NAME] up
+            docker compose --profile $SERVICE_NAME up -d
           EOF
