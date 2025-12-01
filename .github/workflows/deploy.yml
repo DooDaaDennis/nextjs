@@ -26,12 +26,14 @@ jobs:
           ssh ${{ secrets.SERVER_USER }} << EOF
             set -xe
       
-            SERVICE_NAME=${{ github.repository }}
+            SERVICE_NAME=${{ github.event.repository.name }}
       
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u doodaadennis --password-stdin
       
             cd /var/www/dennisapplebaum
       
             docker compose pull 
-            docker compose --profile "$SERVICE_NAME" up -d --force-recreate
+            docker compose stop  "$SERVICE_NAME" || true
+            docker compose rm "$SERVICE_NAME" || ture
+            docker compose --profile "$SERVICE_NAME" up -d
           EOF
