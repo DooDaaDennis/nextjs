@@ -21,7 +21,7 @@ jobs:
 
       - name: Deploy over SSH
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh ${{ secrets.SERVER_USER }} << 'EOF'
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u doodaadennis --password-stdin
 
             cd /root/var/www/dennisapplebaum      # change to your folder containing docker-compose.yml
