@@ -14,7 +14,10 @@ export default function Home() {
           priority
         />
         <ol>
-          <li>A test nextjs site. I have added a release script</li>
+          <li>
+            A test nextjs site. I have added a release script. Now I've tried to
+            make it deploy automatically
+          </li>
         </ol>
       </main>
     </div>
