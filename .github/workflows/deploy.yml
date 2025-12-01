@@ -32,6 +32,6 @@ jobs:
       
             cd /var/www/dennisapplebaum
       
-            docker compose pull "$SERVICE_NAME"
+            docker compose pull 
             docker compose --profile "$SERVICE_NAME" up -d
           EOF
