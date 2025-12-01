@@ -1,0 +1,33 @@
+name: Deploy to DigitalOcean
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519  #Add local private key to Github action secret. local public key to server
+          chmod 600 ~/.ssh/id_ed25519
+          printf "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+
+      - name: Deploy over SSH
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u doodaadennis --password-stdin
+
+            cd /root/var/www/dennisapplebaum      # change to your folder containing docker-compose.yml
+
+            docker compose pull $SERVICE_NAME   # gets newest image from GHCR
+            docker compose up -d $SERVICE_NAME  # restarts service
+          EOF
+      - env:
+        SERVICE_NAME: ${{ github.repository }}
