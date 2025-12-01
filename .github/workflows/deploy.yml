@@ -27,10 +27,10 @@ jobs:
           set -xe
           SERVICE_NAME="${{ github.event.repository.name }}"
           echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u doodaadennis --password-stdin
-          cd /var/www/dennisapplebaum
-          docker compose pull "$SERVICE_NAME"
-          docker compose stop "$SERVICE_NAME" || true
-          docker compose rm "$SERVICE_NAME" || true
+          cd /var/www/dennisapplebaum/"$SERVICE_NAME"
+          docker compose pull
+          docker compose stop
+          docker compose rm
 
-          docker compose --profile "$SERVICE_NAME" up -d
+          docker compose up -d
           EOF
