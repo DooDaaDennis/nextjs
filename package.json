@@ -10,13 +10,13 @@
     "release": "node ../../release.js"
   },
   "dependencies": {
-    "next": "^16.0.8",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "next": "^16.0.10",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "eslint": "^9",
-    "eslint-config-next": "^16.0.8"
+    "eslint-config-next": "^16.0.10"
   }
 }
