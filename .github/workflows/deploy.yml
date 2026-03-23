@@ -10,7 +10,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -23,6 +23,12 @@ jobs:
         run: |
           docker build -t ghcr.io/doodaadennis/nextjs:latest .
           docker push ghcr.io/doodaadennis/nextjs:latest
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        run: gh release create ${{ github.ref_name }} --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup SSH
         run: |
