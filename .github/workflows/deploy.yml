@@ -1,36 +1,45 @@
-name: Deploy to DigitalOcean
+name: Deploy
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
-    env:
-      SERVICE_NAME: ${{ github.event.repository.name  }}
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and push image
+        run: |
+          docker build -t ghcr.io/doodaadennis/nextjs:latest .
+          docker push ghcr.io/doodaadennis/nextjs:latest
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519  #Add local private key to Github action secret. local public key to server
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          printf "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+          ssh-keyscan ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy over SSH
+      - name: Copy files to server
+        run: scp docker-compose.yml dennis@${{ secrets.SERVER_HOST }}:/home/dennis/web/dennisapplebaum/nextjs/
+
+      - name: Deploy on server
         run: |
-          ssh ${{ secrets.SERVER_USER }} bash <<'EOF'
-          set -xe
-          SERVICE_NAME="${{ github.event.repository.name }}"
-          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u doodaadennis --password-stdin
-          cd /home/dennis/web/dennisapplebaum/"$SERVICE_NAME"
-          docker compose pull
-          docker compose stop
-          docker compose rm
-
-          docker compose up -d
+          ssh dennis@${{ secrets.SERVER_HOST }} bash <<'EOF'
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u DooDaaDennis --password-stdin
+            cd /home/dennis/web/dennisapplebaum/nextjs
+            docker compose pull
+            docker compose up -d
+            docker image prune -f
           EOF

@@ -1,0 +1,7 @@
+services:
+  nextjs:
+    container_name: nextjs
+    restart: always
+    ports:
+      - "3002:3000"
+    image: ghcr.io/doodaadennis/nextjs:latest

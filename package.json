@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p 3000",
-    "lint": "next lint",
-    "release": "node ../../release.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "next": "^16.0.10",
